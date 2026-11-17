@@ -582,10 +582,8 @@ debug_info_view =
     vid_copy_time[1] = 0;
     vid_convert_time = 0;
 
-	// Use smaller texture size for old 3DS to save linear memory
-	int tex_size = var_is_new3ds ? 1024 : 512;
-    for (int i = 0; i < 2; i++) {
-		result = Draw_c2d_image_init(&vid_image[i], tex_size, tex_size, GPU_RGB565);
+	for (int i = 0; i < 2; i++) {
+		result = Draw_c2d_image_init(&vid_image[i], 1024, 1024, GPU_RGB565);
 	    if (result.code != 0) {
 		    Util_err_set_error_message(DEF_ERR_OUT_OF_LINEAR_MEMORY_STR, "", DEF_SAPP0_INIT_STR,
 		                               DEF_ERR_OUT_OF_LINEAR_MEMORY);
