@@ -29,7 +29,10 @@ void NetworkMultipleDecoder::deinit() {
 void NetworkMultipleDecoder::init_mvd() {
 	if (!mvd_inited) {
 		Result mvd_result = -1;
-		for (int mb = 15; mb >= 5; mb--) {
+		// Start from smaller buffer for old 3DS, go down to 5MB minimum
+		// Old 3DS has less linear memory available
+		int start_mb = var_is_new3ds ? 15 : 12;
+		for (int mb = start_mb; mb >= 5; mb--) {
 			mvd_result = mvdstdInit(MVDMODE_VIDEOPROCESSING, MVD_INPUT_H264, MVD_OUTPUT_BGR565, 1000000 * mb, NULL);
 			if (mvd_result == 0) {
 				logger.info("dec/init", "mvdstdInit ok at " + std::to_string(mb) +

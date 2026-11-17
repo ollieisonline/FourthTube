@@ -62,7 +62,8 @@
 #define DEF_ERR_INVALID_ARG_STR (std::string) "[Error] Invalid argument. "
 
 // thread
-#define DEF_STACKSIZE (64 * 1024)
+// Reduced stack size for old 3DS to save memory
+#define DEF_STACKSIZE (48 * 1024)
 #define DEF_INACTIVE_THREAD_SLEEP_TIME 100000
 #define DEF_ACTIVE_THREAD_SLEEP_TIME 50000
 // 0x18~0x3F

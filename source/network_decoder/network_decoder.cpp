@@ -135,7 +135,8 @@ void ffmpeg_log_callback(void *, int level, const char *fmt, va_list vargs) {
 	}
 }
 
-#define NETWORK_BUFFER_SIZE 0x10000
+// Reduced network buffer size for old 3DS to save memory
+#define NETWORK_BUFFER_SIZE 0x8000
 Result_with_string NetworkDecoderFFmpegIOData::init_(int type, NetworkDecoder *parent_decoder) {
 	Result_with_string result;
 	int ffmpeg_result;

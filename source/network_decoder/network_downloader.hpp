@@ -9,8 +9,11 @@
 // one instance per one url (once constructed, the url is not changeable)
 struct NetworkStream {
 	static constexpr u64 BLOCK_SIZE = 0x40000; // 256 KiB
-	static constexpr u64 NEW3DS_MAX_CACHE_BLOCKS = 12 * 1000 * 1000 / BLOCK_SIZE;
-	static constexpr u64 OLD3DS_MAX_CACHE_BLOCKS = 4 * 1000 * 1000 / BLOCK_SIZE;
+	// Reduced cache blocks for old 3DS to save memory
+	// Old 3DS: 3MB (reduced from 4MB) to free up memory for system
+	// New 3DS: 10MB (reduced from 12MB) to be more conservative
+	static constexpr u64 NEW3DS_MAX_CACHE_BLOCKS = 10 * 1000 * 1000 / BLOCK_SIZE;
+	static constexpr u64 OLD3DS_MAX_CACHE_BLOCKS = 3 * 1000 * 1000 / BLOCK_SIZE;
 	static constexpr int RETRY_CNT_MAX = 1;
 	static u64 get_block_num(u64 size) { return (size + BLOCK_SIZE - 1) / BLOCK_SIZE; }
 

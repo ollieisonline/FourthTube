@@ -1,11 +1,15 @@
 #pragma once
 
+// Optimized CPU limits for better stability on old 3DS
+// Old 3DS gets more CPU time to handle video decoding better
 #define NEW_3DS_CPU_LIMIT 50
-#define OLD_3DS_CPU_LIMIT 65
+#define OLD_3DS_CPU_LIMIT 75
 #define CPU_LIMIT (var_is_new3ds ? NEW_3DS_CPU_LIMIT : OLD_3DS_CPU_LIMIT)
 
-#define NEW_3DS_ADDITIONAL_CPU_LIMIT 25
-#define OLD_3DS_ADDITIONAL_CPU_LIMIT 50
+// Additional CPU limit when waiting for network
+// Reduced for old 3DS to minimize context switching overhead
+#define NEW_3DS_ADDITIONAL_CPU_LIMIT 20
+#define OLD_3DS_ADDITIONAL_CPU_LIMIT 35
 #define ADDITIONAL_CPU_LIMIT (var_is_new3ds ? NEW_3DS_ADDITIONAL_CPU_LIMIT : OLD_3DS_ADDITIONAL_CPU_LIMIT)
 
 void add_cpu_limit(int limit);

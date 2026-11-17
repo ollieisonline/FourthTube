@@ -56,7 +56,8 @@ void Menu_init(void) {
 	LOG_IF_ERROR(mcuHwcInit());
 	LOG_IF_ERROR(ptmuInit());
 	{
-		constexpr int SOC_BUFFERSIZE = 0x100000;
+		// Reduced SOC buffer size for old 3DS to save memory
+		constexpr int SOC_BUFFERSIZE = 0x80000;
 		u32 *soc_buffer = (u32 *)memalign(0x1000, SOC_BUFFERSIZE);
 		if (!soc_buffer) {
 			logger.error(DEF_MENU_INIT_STR, "soc buffer out of memory");
@@ -65,12 +66,12 @@ void Menu_init(void) {
 		}
 	}
 	LOG_IF_ERROR(sslcInit(0));
-	LOG_IF_ERROR(httpcInit(0x200000));
+	// Reduced httpc buffer size for old 3DS
+	LOG_IF_ERROR(httpcInit(0x100000));
 	LOG_IF_ERROR(romfsInit());
 	LOG_IF_ERROR(cfguInit());
 	LOG_IF_ERROR(amInit());
 	LOG_IF_ERROR((sound_init_result = ndspInit())); // 0xd880A7FA if ndsp firmware is lacking
-	LOG_IF_ERROR(APT_SetAppCpuTimeLimit(30));
 	lock_network_state();
 
 	aptSetSleepAllowed(false);
@@ -79,6 +80,8 @@ void Menu_init(void) {
 	logger.info(DEF_MENU_INIT_STR, "Services initialized.");
 
 	APT_CheckNew3DS(&var_is_new3ds);
+	// Set higher CPU time limit for old 3DS to improve stability
+	LOG_IF_ERROR(APT_SetAppCpuTimeLimit(var_is_new3ds ? 30 : 35));
 	CFGU_GetSystemModel(&var_model);
 
 	if (var_is_new3ds) { // check core availability
