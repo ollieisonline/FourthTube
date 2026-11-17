@@ -147,10 +147,10 @@ class NetworkDecoderFilterData {
 
 class NetworkDecoder {
   private:
-	// Reduced buffer sizes for old 3DS to prevent memory exhaustion
-	// Old 3DS: 2MB (reduced from 3MB to free up memory for system)
+	// Reduced buffer sizes for old 3DS to prevent memory exhaustion and reduce latency
+	// Old 3DS: 1.5MB (reduced from 3MB to free up memory and reduce frame buffering latency)
 	// New 3DS: 6MB (reduced from 8MB to be more conservative)
-	static constexpr size_t OLD_MAX_RAW_BUFFER_SIZE = 2 * 1000 * 1000;
+	static constexpr size_t OLD_MAX_RAW_BUFFER_SIZE = 1500 * 1000;
 	static constexpr size_t NEW_MAX_RAW_BUFFER_SIZE = 6 * 1000 * 1000;
 	static constexpr int VIDEO = 0;
 	static constexpr int AUDIO = 1;

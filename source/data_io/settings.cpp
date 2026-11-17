@@ -68,9 +68,10 @@ void load_settings() {
 	             std::max(COMMUNITY_IMAGE_SIZE_MIN, load_int("community_image_size", COMMUNITY_IMAGE_SIZE_DEFAULT)));
 	var_autoplay_level = std::min(2, std::max(0, load_int("autoplay_level", 2)));
 	var_loop_mode = std::min(2, std::max(0, load_int("loop_mode", 0)));
-	// Default to 144p for old 3DS to improve stability, 240p for new 3DS
+	// Default to 144p for old 3DS for maximum stability, 240p for new 3DS
 	var_video_quality = std::min(480, std::max(0, load_int("video_quality", var_is_new3ds ? 240 : 144)));
-	var_forward_buffer_ratio = std::max(0.1, std::min(1.0, load_double("forward_buffer_ratio", 0.8)));
+	// Reduce forward buffer for old 3DS to lower latency
+	var_forward_buffer_ratio = std::max(0.1, std::min(1.0, load_double("forward_buffer_ratio", var_is_new3ds ? 0.8 : 0.5)));
 	var_history_enabled = load_int("history_enabled", 1);
 	var_video_show_debug_info = load_int("video_show_debug_info", 0);
 	var_player_response = load_int("player_response", 1); // (Beta 24.1, switch to Android VR for now)

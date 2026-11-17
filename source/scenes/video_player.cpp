@@ -546,12 +546,13 @@ debug_info_view =
 	    network_decoder.set_frame_cores_enabled(frame_cores);
 	    network_decoder.set_slice_cores_enabled(slice_cores);
 
+	    // On old 3DS, give video decode thread MAX priority since it's the bottleneck
 	    vid_decode_thread =
-	        threadCreate(decode_thread, (void *)("1"), DEF_STACKSIZE, DEF_THREAD_PRIORITY_HIGH, 1, false);
+	        threadCreate(decode_thread, (void *)("1"), DEF_STACKSIZE, DEF_THREAD_PRIORITY_REALTIME, 1, false);
 	    vid_convert_thread =
-	        threadCreate(convert_thread, (void *)(""), DEF_STACKSIZE, DEF_THREAD_PRIORITY_NORMAL, 0, false);
+	        threadCreate(convert_thread, (void *)(""), DEF_STACKSIZE, DEF_THREAD_PRIORITY_HIGH, 0, false);
 	    livestream_initer_thread = threadCreate(livestream_initer_thread_func, &network_decoder, DEF_STACKSIZE,
-	                                            DEF_THREAD_PRIORITY_NORMAL, 1, false);
+	                                            DEF_THREAD_PRIORITY_LOW, 1, false);
     }
     stream_downloader_thread = threadCreate(network_downloader_thread, &stream_downloader, DEF_STACKSIZE,
                                             DEF_THREAD_PRIORITY_NORMAL, 0, false);
@@ -629,8 +630,8 @@ debug_info_view =
     vid_height = 0;
     vid_video_format = "n/a";
     vid_audio_format = "n/a";
-	// Default to 240p for old 3DS to improve stability, 360p for new 3DS
-	video_p_value = var_is_new3ds ? 360 : 240;
+	// Default to 144p for old 3DS for maximum stability, 240p for new 3DS
+	video_p_value = var_is_new3ds ? 240 : 144;
 
     VideoPlayer_resume("");
     vid_already_init = true;
@@ -1444,8 +1445,8 @@ debug_info_view =
 			    }
 		    } else {
 			    // Fallback to 144p if 240p is not available on old 3DS
-				// Default to 240p for old 3DS to improve stability, 360p for new 3DS
-	video_p_value = var_is_new3ds ? 360 : 240;
+				// Default to 144p for old 3DS for maximum stability, 240p for new 3DS
+	video_p_value = var_is_new3ds ? 240 : 144;
 			    if (!is_available(video_p_value)) {
 				    audio_only_mode = true;
 			    }

@@ -80,8 +80,8 @@ void Menu_init(void) {
 	logger.info(DEF_MENU_INIT_STR, "Services initialized.");
 
 	APT_CheckNew3DS(&var_is_new3ds);
-	// Set higher CPU time limit for old 3DS to improve stability
-	LOG_IF_ERROR(APT_SetAppCpuTimeLimit(var_is_new3ds ? 30 : 35));
+	// Set higher CPU time limit for old 3DS (80% to maximize single-core performance)
+	LOG_IF_ERROR(APT_SetAppCpuTimeLimit(var_is_new3ds ? 30 : 40));
 	CFGU_GetSystemModel(&var_model);
 
 	if (var_is_new3ds) { // check core availability
